@@ -1,0 +1,34 @@
+{%extends "base.html"%}
+{% load static %}
+
+{%block content %}
+
+
+{% endblock%}
+
+{%block services %}
+<div class="container mt-5 mb-5">
+    <div class="row">
+        {%for post in posts %}
+        <div class="col-lg-4">
+            <div class="card shadow" >
+                {% if post.image%}
+                 <img  class="card-img-top" src="{{post.image.url}}" alt="card image cap" width="100px" height="200px">
+                {% else %}
+                    <p>image no available</p>
+                {% endif %}
+             <div class="card-body">
+                 <h5 class="card-title">{{post.titre}}</h5>
+                 <p class="card-text">{{post.description | truncatechars:60 }}</p>
+                  <div class="d-flex justify-content-between align-items-center">
+                        <p style="font-weight: bold;">By {{ post.auteur }}</p>
+                        <a href="{{post.get_absolute_url}}" class="btn btn-primary">consulter</a>
+                  </div>
+             </div>
+             </div>
+        </div>
+        {%endfor%}
+
+    </div>
+</div>
+{% endblock%}

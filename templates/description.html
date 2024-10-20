@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Détails de l'article</title>
+<style>
+    body {
+        margin: 0;
+        font-family: Arial, sans-serif;
+        background: linear-gradient(to right, #2ecc71, #3498db); /* Dégradé de couleur vert à bleu */
+        color: #fff;
+        padding: 20px;
+        display: grid;
+        grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+        grid-gap: 20px;
+    }
+
+    .article-details {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        text-align: center;
+        padding: 20px;
+        border-radius: 15px;
+        background: rgba(255, 255, 255, 0.1);
+        backdrop-filter: blur(10px);
+    }
+
+    h2 {
+        margin: 0;
+        text-align: left;
+    }
+
+    img {
+        width: 100%;
+        max-width: 300px;
+        height: auto;
+        border-radius: 15px;
+        margin-top: 10px;
+    }
+
+    dl {
+        margin-top: 20px;
+    }
+
+    dt {
+        font-weight: bold;
+        margin-top: 10px;
+    }
+
+    dd {
+        margin-bottom: 10px;
+    }
+</style>
+</head>
+<body>
+    <div class="article-details">
+        <p>Titre de l'article:</p>
+        <h2>{{get_article.titre}}</h2>
+        <img src="{{get_article.image.url}}" alt="Image de l'article">
+    </div>
+    <div class="article-details">
+        <dl>
+            <dt>Description:</dt>
+            <dd>{{get_article.description}}</dd>
+
+            <dt>Date de création:</dt>
+            <dd>{{get_article.dateCreation}}</dd>
+
+            <dt>Nombre de vues:</dt>
+            <dd>{{get_article.nombre_vue}}</dd>
+
+            <dt>Auteur:</dt>
+            <dd>{{get_article.auteur}}</dd>
+        </dl>
+    </div>
+</body>
+</html>
