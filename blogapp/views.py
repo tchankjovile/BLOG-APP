@@ -2,26 +2,80 @@ from django.contrib.auth import login, logout, authenticate
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect, get_object_or_404
 from pyexpat.errors import messages
-from blogapp.forms import SignupForm, ArticleCreateForm, ModifyArticleForm, LoginForm
-from blogapp.models import Article, CustomUser
+from django.contrib.auth.models import User
+from blogapp.forms import RegistrationForm, ArticleCreateForm, ModifyArticleForm, LoginForm
+from blogapp.models import Article, Category
 from django.contrib import messages
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
+from django.http import JsonResponse
+
+
+
 # Create your views here.
+def increment_like(request, article_id):
+    article = get_object_or_404(Article, id=article_id)
+    article.likes += 1  # Incrémente le compteur de likes
+    article.save()
+    return JsonResponse({'likes_count': article.likes})  # Retourne le nouveau nombre de likes
 
+def index_view(request, category= None):
+    posts= Article.publier.all()
+    categorie= Category.objects.all()
+    if category:
+        category= get_object_or_404(Category, slug=category)
+        posts= posts.filter(category= category)
 
-def index_view(request):
-    posts= Article.objects.all()
+    paginator= Paginator(posts, 5)
+    page= request.GET.get('page')
+    try:
+        posts= paginator.page(page)
+    except PageNotAnInteger:
+        posts= paginator.page(1)
+    except EmptyPage:
+        paginator.page(paginator.num_pages)
+    context= {
+        'posts': posts,
+        'page': page,
+        'categorie': categorie,
+        'category': category
+    }
     #print(posts)
-    return render(request, 'index.html', locals())
+    return render(request, 'index.html', context)
 
 
 @login_required
-def home_view(request):
+def home_view(request, category= None):
+    posts = Article.publier.all()
+    categorie = Category.objects.all()
+    if category:
+        category = get_object_or_404(Category, slug=category)
+        posts = posts.filter(category=category)
+
+    paginator = Paginator(posts, 2)
+    page = request.GET.get('page')
+    try:
+        posts = paginator.page(page)
+    except PageNotAnInteger:
+        posts = paginator.page(1)
+    except EmptyPage:
+        paginator.page(paginator.num_pages)
+    context = {
+        'posts': posts,
+        'page': page,
+        'categorie': categorie,
+        'category': category
+    }
+    # print(posts)
+    return render(request, 'home.html', context)
+
+
+def listarticle_view(request):
     user  = request.user
-    posts= Article.objects.filter(auteur= user)
+    posts= Article.objects.all().filter(auteur= user)
     context= {
         'posts': posts,
     }
-    return render(request, 'home.html', context)
+    return render(request, 'listarticle.html', context)
 
 
 def login_view(request):
@@ -50,19 +104,27 @@ def logout_view(request):
 
 
 def signup_view(request):
-    if request.method == "POST":
-        user_form = SignupForm(request.POST, request.FILES)
+    if request.method == 'POST':
+        user_form = RegistrationForm(request.POST)
         if user_form.is_valid():
-            user_form.save()
+            new_user= user_form.save(commit= False)
+            new_user.set_password(user_form.cleaned_data['password'])
+            new_user.save()
             return redirect('login')
+        else:
+            print("formulaire non valide")
+            return render(request, 'signup.html', {'user_form': user_form})
     else:
-         user_form = SignupForm()
+        print("pas de requete post")
+        user_form = RegistrationForm()
     return render(request, 'signup.html', {'user_form': user_form})
 
 
 def description_view(request, id):
     get_article= get_object_or_404(Article, id=id)
-    print(get_article)
+    get_article.nombre_vue=+1
+    get_article.save()
+    # print(get_article)
     return render(request, 'description.html', locals())
 
 
@@ -73,7 +135,7 @@ def modify_view(request, id):
         form = ModifyArticleForm(request.POST, request.FILES, instance=article)
         if form.is_valid():
             form.save()
-            return redirect('home')
+            return redirect('listarticle')
     else:
         form = ModifyArticleForm(instance=article)  # Initialisez le formulaire avec l'instance de l'article
 
@@ -83,15 +145,26 @@ def modify_view(request, id):
 def delete_view(request, id):
     article= get_object_or_404(Article, id= id)
     if article.delete():
-        return redirect('home')
-    return render(request, 'home.html', locals())
+        return redirect('listarticle')
+    return render(request, 'listarticle.html', locals())
 
+
+@login_required
 def articlecreate_view(request):
-    form = ArticleCreateForm(request.POST or None)
+    form = ArticleCreateForm(request.POST, request.FILES)
     if form.is_valid():
-        form.save()
+        article= form.save(commit= False)
+        article.auteur= request.user
+        article.save()
+        return redirect('listarticle')
+    else:
         form = ArticleCreateForm()
-        messages= "votre article a été enregistrer"
     return render(request, 'articlecreate.html', locals())
+
+
 def apropos_view(request):
     return render(request, 'apropos.html')
+
+
+def stream_view(request, id):
+    pass

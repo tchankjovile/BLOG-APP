@@ -4,7 +4,10 @@ from .views import *
 
 urlpatterns=[
     path('', index_view, name = "index"),
+    path('categorie/<slug:category>/', index_view, name='categorylist'),
+    path('article/<int:article_id>/like/', increment_like, name='increment_like'),
     path('home/', home_view, name= "home"),
+    path('listarticle/', listarticle_view, name= "listarticle"),
     path('login/', login_view, name="login"),
     path('logout/', logout_view, name="logout"),
     path('createarticle/', articlecreate_view, name="createarticle"),

@@ -1,82 +1,87 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Interface d'Inscription</title>
-<style>
-    body {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        height: 100vh;
-        margin: 0;
-        font-family: Arial, sans-serif;
-        background: linear-gradient(to right, #c4c4c4, #f9f9f9, #c4c4c4);
-        transition: background 0.5s;
-    }
+{% extends 'base.html'%}
+{% load static %}
 
-    .outer-rectangle {
-        display: inline-block;
-        padding: 40px;
-        border: 2px solid #3498db;
-        border-radius: 15px;
-        transition: border-color 0.5s;
-    }
+{% block content %}
+<div class="border rounded p-4 bg-gray container px-5 my-5">
+    <form id="contactForm" data-sb-form-api-token="API_TOKEN" action="." method="POST">
+        {%csrf_token%}
+        <div class="form-floating mb-3">
+<!--            <input class="form-control" id="username" type="text" placeholder="username"-->
+<!--                   data-sb-validations="required"/>-->
+            {{user_form.username}}
+            <label for="{{user_form.username.id_for_labale}}">username</label>
+            <div class="invalid-feedback" data-sb-feedback="username:required">username is required.</div>
+        </div>
+        <div class="form-floating mb-3">
+<!--            <input class="form-control" id="name" type="text" placeholder="name" data-sb-validations="required"/>-->
+<!--            <label for="name">name</label>-->
+            {{user_form.first_name}}
+            <label for="{{user_form.first_name.id_for_labale}}">First name</label>
+            <div class="invalid-feedback" data-sb-feedback="firstName:required">First Name is required.</div>
+        </div>
+        <div class="form-floating mb-3">
+            <!--            <input class="form-control" id="name" type="text" placeholder="name" data-sb-validations="required"/>-->
+            <!--            <label for="name">name</label>-->
+            {{user_form.last_name}}
+            <label for="{{user_form.last_name.id_for_labale}}">Last Name</label>
+            <div class="invalid-feedback" data-sb-feedback="lasstName:required">Last Name is required.</div>
+        </div>
 
-    .login-box {
-        width: 300px;
-        padding: 20px;
-        border-radius: 5px;
-        box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
-        background: linear-gradient(45deg, #4CAF50, #2196F3);
-        transition: background 0.5s;
-    }
-
-    .login-box:hover {
-        transform: translateY(-5px);
-    }
-
-    .login-box h2 {
-        text-align: center;
-        color: #fff;
-    }
-
-    .login-box input[type="text"],
-    .login-box input[type="email"],
-    .login-box input[type="tel"],
-    .login-box input[type="file"],
-    .login-box input[type="password"],
-    .login-box input[type="submit"] {
-        width: 100%;
-        padding: 8px;
-        margin: 5px 0;
-        box-sizing: border-box;
-        border: none;
-        border-radius: 4px;
-    }
-
-    .login-box input[type="submit"] {
-        background-color: #3498db;
-        color: white;
-        font-weight: bold;
-        cursor: pointer;
-    }
-
-    .login-box input[type="submit"]:hover {
-        background-color: #2980b9;
-    }
-</style>
-</head>
-<body>
-<div class="outer-rectangle">
-    <div class="login-box">
-        <h2>Inscription</h2>
-         <form method="post" enctype="multipart/form-data">
-        {% csrf_token %}
-        {{ user_form.as_p }}
-        <button type="submit">S'inscrire</button>
-    </div>
+        <div class="form-floating mb-3">
+<!--            <input class="form-control" id="emailAddress" type="email" placeholder="Email Address"-->
+<!--                   data-sb-validations="required,email"/>-->
+<!--            <label for="emailAddress">Email Address</label>-->
+            {{user_form.email}}
+            <label for="{{user_form.email.id_for_labale}}">email</label>
+            <div class="invalid-feedback" data-sb-feedback="emailAddress:required">Email Address is required.</div>
+            <div class="invalid-feedback" data-sb-feedback="emailAddress:email">Email Address Email is not valid.</div>
+        </div>
+<!--        <div class="form-floating mb-3">-->
+<!--&lt;!&ndash;            <input class="form-control" id="telephone" type="text" placeholder="telephone"&ndash;&gt;-->
+<!--&lt;!&ndash;                   data-sb-validations="required"/>&ndash;&gt;-->
+<!--&lt;!&ndash;            <label for="telephone">telephone</label>&ndash;&gt;-->
+<!--            {{user_form.telephone}}-->
+<!--            <label for="{{user_form.telepone.id_for_labale}}">telephone</label>-->
+<!--            <div class="invalid-feedback" data-sb-feedback="telephone:required">telephone is required.</div>-->
+<!--        </div>-->
+<!--        <div class="form-floating mb-3">-->
+<!--&lt;!&ndash;            <input class="form-control" id="sexe" type="text" placeholder="sexe" data-sb-validations="required"/>&ndash;&gt;-->
+<!--&lt;!&ndash;            <label for="sexe">sexe</label>&ndash;&gt;-->
+<!--            {{user_form.sexe}}-->
+<!--            <label for="{{user_form.sexe.id_for_labale}}">sexe</label>-->
+<!--            <div class="invalid-feedback" data-sb-feedback="sexe:required">sexe is required.</div>-->
+<!--        </div>-->
+        <div class="form-floating mb-3">
+<!--            <input class="form-control" id="password" type="text" placeholder="password"-->
+<!--                   data-sb-validations="required"/>-->
+<!--            <label for="password">password</label>-->
+            {{user_form.password}}
+            <label for="{{user_form.password.id_for_labale}}">password</label>
+            <div class="invalid-feedback" data-sb-feedback="password:required">password is required.</div>
+        </div>
+        <div class="form-floating mb-3">
+<!--            <input class="form-control" id="confirmPassword" type="text" placeholder="confirm password"-->
+<!--                   data-sb-validations="required"/>-->
+<!--            <label for="confirmPassword">confirm password</label>-->
+               {{user_form.confirm_password}}
+            <label for="{{user_form.confirm_password.id_for_labale}}">confirm_passwword</label>
+            <div class="invalid-feedback" data-sb-feedback="confirmPassword:required">confirm password is required.
+            </div>
+        </div>
+        <div class="d-none" id="submitSuccessMessage">
+            <div class="text-center mb-3">
+                <div class="fw-bolder">Form submission successful!</div>
+                <p>To activate this form, sign up at</p>
+                <a href="https://startbootstrap.com/solution/contact-forms">https://startbootstrap.com/solution/contact-forms</a>
+            </div>
+        </div>
+        <div class="d-none" id="submitErrorMessage">
+            <div class="text-center text-danger mb-3">Error sending message!</div>
+        </div>
+        <div class="d-grid">
+            <button class="btn btn-primary btn-lg" id="submitButton" type="submit">Submit</button>
+        </div>
+    </form>
 </div>
-</body>
-</html>
+
+{% endblock %}

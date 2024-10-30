@@ -27,6 +27,8 @@ DEBUG = True
 
 ALLOWED_HOSTS = [
     'blog-app-8-l93x.onrender.com',
+    'local',
+    '127.0.0.1',
 ]
 
 
@@ -101,7 +103,7 @@ AUTH_PASSWORD_VALIDATORS = [
         'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
     },
 ]
-AUTH_USER_MODEL= 'blogapp.CustomUser'
+# AUTH_USER_MODEL= ''
 
 
 # Internationalization
