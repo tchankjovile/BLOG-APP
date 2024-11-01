@@ -13,6 +13,7 @@ urlpatterns=[
     path('createarticle/', articlecreate_view, name="createarticle"),
     path('signup/', signup_view, name= 'signup'),
     path('description/<str:id>/', description_view, name= 'description'),
+    path('postsimilaire/', description_view, name='postsimilaire'),
     path('modify/<str:id>/', modify_view, name= 'modify'),
     path('delete/<str:id>/', delete_view, name= 'delete'),
     path('apropos/', apropos_view, name= 'apropos'),

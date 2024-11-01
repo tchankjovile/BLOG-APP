@@ -5,89 +5,80 @@
 {% block services %}
 
 <!-- Page content-->
-    <div class="container mt-5">
-        <div class="row">
-            <div class="col-lg-8">
+<div class="container mt-5">
+    <div class="row">
+        <div class="col-lg-8">
             <!-- Post content-->
-                <article>
+            <article>
                 <!-- Post header-->
-                    <header class="mb-4">
+                <header class="mb-4">
                     <!-- Post title-->
-                        <h1 class="fw-bolder mb-1">Bienvenue et Merci de Lire cette Publication!</h1>
-                        <h2 class="fw-bolder mb-1">Titre: <strong>{{get_article.titre}}</strong></h2>
+                    <h1 class="fw-bolder mb-1">Bienvenue et Merci de Lire cette Publication!</h1>
+                    <h2 class="fw-bolder mb-1">Titre: <strong>{{get_article.titre}}</strong></h2>
                     <!-- Post meta content-->
-                        <div class="text-muted fst-italic mb-2">creer le {{get_article.date_creation}}  par : {{get_article.auteur}}</div>
-                        <div class="text-muted fst-italic mb-2">Publié le  le {{get_article.date_publication}}</div>
+                    <div class="text-muted fst-italic mb-2">creer le {{get_article.date_creation}} par :
+                        {{get_article.auteur}}
+                    </div>
+                    <div class="text-muted fst-italic mb-2">Publié le le {{get_article.date_publication}}</div>
                     <!-- Post categories-->
-                        <a class="badge bg-primary text-white link-light" href="#!">Voir des Articles Similaire</a>
-                        <button class="btn btn-outline-primary">
-                            <i class="fas fa-thumbs-up"></i> J'aime {{get_article.likes}}
-                        </button>
-                    </header>
-                    <div class="article-details">
-                        <img src="{{get_article.image.url}}" alt="Image de l'article">
-                    </div>
+                    <a class="badge bg-primary text-white link-light" href="#!">Voir des Articles Similaire</a>
+                    <button class="btn btn-outline-primary" id="like-button-{{ post.id }}"
+                            data-article-id="{{ get_article.id }}">
+                        <i class="fas fa-thumbs-up"></i> J'aime <span id="likes-count-{{ get_article.id }}">{{ get_article.likes }}</span>
+                    </button>
+
+                </header>
+                <div class="article-details">
+                    <img src="{{get_article.image.url}}" alt="Image de l'article">
+                </div>
                 <!-- Preview image figure-->
-                    <img class="img-fluid rounded" src="{{get_article.image.url}} alt="image de l'article/>
+                <img class="img-fluid rounded" src="{{get_article.image.url}} alt=" image de l'article/>
                 <!-- Post content-->
-                    <section class="mb-5">
-                        <p class="fs-5 mb-4">{{get_article.description}}</p>
-                    </section>
-                </article>
- <!-- Comments section-->
-        <section class="mb-5">
-            <div class="card bg-light">
-                <div class="card-body">
-                <!-- Comment form-->
-                    <form class="mb-4"><textarea class="form-control" rows="3"
-                                             placeholder="Join the discussion and leave a comment!"></textarea></form>
-                <!-- Comment with nested comments-->
-                    <div class="d-flex mb-4">
-                    <!-- Parent comment-->
-                        <div class="flex-shrink-0"><img class="rounded-circle"
-                                                    src="https://dummyimage.com/50x50/ced4da/6c757d.jpg" alt="..."/>
-                        </div>
-                        <div class="ms-3">
-                            <div class="fw-bold">Commenter Name</div>
-                            If you're going to lead a space frontier, it has to be government; it'll never be private
-                            enterprise. Because the space frontier is dangerous, and it's expensive, and it has
-                            unquantified
-                            risks.
-                            <!-- Child comment 1-->
-                        <div class="d-flex mt-4">
+                <section class="mb-5">
+                    <p class="fs-5 mb-4">{{get_article.description}}</p>
+                </section>
+            </article>
+            <!-- Comments section-->
+            <section class="mb-5">
+                <div class="card bg-light">
+                    <h2>
+                        {%with comments.count as total_comments %}
+                        {{ total_comments}} comment{{total_comments|pluralize}}
+                        {% endwith%}
+                    </h2>
+                    {% if request.user.is_authenticated %}
+                    <div class="card-body">
+                        <!-- Comment form-->
+                        {% if new_comment %}
+                        <h3> votre commentaire a été ajouter </h3>
+                        {% else %}
+                        <h3>ajouter un nouveau commentaire</h3>
+                        <form action="" method="post" class="mb-5">
+                            {% csrf_token %}
+                            {{comment_form.as_p}}
+                            <button class=" btn btn-primary" type="submit"> Commenter</button>
+                        </form>
+                        {% endif %}
+                        {% endif %}
+                        {% for comment in comments %}
+                        <div class="d-flex mb-2">
                             <div class="flex-shrink-0"><img class="rounded-circle"
                                                             src="https://dummyimage.com/50x50/ced4da/6c757d.jpg"
-                                                            alt="..."/></div>
+                                                            alt="..."/>
+                            </div>
                             <div class="ms-3">
-                                <div class="fw-bold">Commenter Name</div>
-                                And under those conditions, you cannot establish a capital-market evaluation of that
-                                enterprise. You can't get investors.
+                                <div class="fw-bold">
+                                    #{{forloop.counter}} {{comment.auteur_com.username}}
+                                    <span class="text-muted"> at {{comment.created}} </span>
+                                </div>
+                                {{comment.body}}
                             </div>
                         </div>
-                        <!-- Child comment 2-->
-                        <div class="d-flex mt-4">
-                            <div class="flex-shrink-0"><img class="rounded-circle"
-                                                            src="https://dummyimage.com/50x50/ced4da/6c757d.jpg"
-                                                            alt="..."/></div>
-                            <div class="ms-3">
-                                <div class="fw-bold">Commenter Name</div>
-                                When you put money directly to a problem, it makes a good headline.
-                            </div>
-                        </div>
+                        {% empty %}
+                        <h2>pas encore de commentaire sur ce poste</h2>
+                        {% endfor%}
+
                     </div>
                 </div>
-                <!-- Single comment-->
-                <div class="d-flex">
-                    <div class="flex-shrink-0"><img class="rounded-circle"
-                                                    src="https://dummyimage.com/50x50/ced4da/6c757d.jpg" alt="..."/>
-                    </div>
-                    <div class="ms-3">
-                        <div class="fw-bold">Commenter Name</div>
-                        When I look at the universe and all the ways the universe wants to kill us, I find it hard to
-                        reconcile that with statements of beneficence.
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-{%endblock%}
+            </section>
+            {%endblock%}

@@ -1,5 +1,5 @@
 from django import forms
-from django.forms import Textarea
+from django.forms import Textarea, TextInput
 
 from .models import Article, Comment, Category
 from django.contrib.auth.models import User
@@ -49,9 +49,10 @@ class ModifyArticleForm(forms.ModelForm):
         model = Article
         fields= ('titre', 'description', 'image', 'date_modification', 'category')
 
-
 class CommentForm(forms.ModelForm):
-    # corps= forms.TimeField(widget=Textarea(attrs={'class': 'form-control', 'row':3}))
+    # username= forms.CharField(max_length=100, widget= TextInput(attrs={'class': 'form-control'}))
+    # email= forms.CharField(widget= TextInput(attrs={'class': 'form-control'}))
+    body= forms.CharField(widget= TextInput(attrs={'class': 'form-control', 'row': '3'}))
     class Meta:
-        model = Comment
-        fields= ('username', 'email', 'corps',)
+        model= Comment
+        fields= ['body']

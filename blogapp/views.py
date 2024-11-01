@@ -3,8 +3,8 @@ from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect, get_object_or_404
 from pyexpat.errors import messages
 from django.contrib.auth.models import User
-from blogapp.forms import RegistrationForm, ArticleCreateForm, ModifyArticleForm, LoginForm
-from blogapp.models import Article, Category
+from blogapp.forms import RegistrationForm, ArticleCreateForm, ModifyArticleForm, LoginForm, CommentForm
+from blogapp.models import Article, Category, Comment
 from django.contrib import messages
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.http import JsonResponse
@@ -120,11 +120,26 @@ def signup_view(request):
     return render(request, 'signup.html', {'user_form': user_form})
 
 
-def description_view(request, id):
+def description_view(request, id, category= None):
     get_article= get_object_or_404(Article, id=id)
+    #incrementer d'un le nmbre de vue d'un article si le boutton j"aime est cliquer
     get_article.nombre_vue=+1
     get_article.save()
+
+    comments= Comment.objects.filter(post= get_article.id)
+    new_comment= None
+    if request.method== 'POST':
+        comment_form= CommentForm(data= request.POST)
+        if comment_form.is_valid():
+            new_comment= comment_form.save(commit= False)
+            new_comment.post= get_article
+            new_comment.auteur_com= request.user
+            new_comment.save()
+    else:
+        comment_form= CommentForm()
     # print(get_article)
+    # if category:
+    #     articlesimilaire= Article.objects.all().filter(category=get_article.category)
     return render(request, 'description.html', locals())
 
 

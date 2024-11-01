@@ -67,10 +67,10 @@
                     <p class="card-text">{{post.description | truncatechars:60 }}</p>
                     <div class="d-flex justify-content-between align-items-center">
                         <p style="font-weight: bold;">By {{ post.auteur }}</p>
-                        <button class="btn btn-outline-primary" id="like-button-{{ post.id }}"
-                                data-article-id="{{ post.id }}">
-                            <i class="fas fa-thumbs-up"></i> J'aime <span id="likes-count-{{ post.id }}">{{ post.likes }}</span>
-                        </button>
+
+<!--                        <button class="btn btn-outline-primary">-->
+                            <i class="fas fa-thumbs-up"></i>{{post.likes}}
+<!--                        </button>-->
                         <a href="{{post.get_absolute_url}}" class="btn btn-primary">consulter</a>
                     </div>
                 </div>

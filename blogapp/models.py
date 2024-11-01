@@ -39,7 +39,6 @@ class PublishedManager(models.Manager):
     def get_queryset(self):
         return super(PublishedManager, self).get_queryset().filter(etat= 'publié')
 
-
 class Article(models.Model):
 
     etat_choices = [
@@ -76,16 +75,28 @@ class Article(models.Model):
         return self.titre
 
 
+# class Comment(models.Model):
+#     post= models.ForeignKey(Article, on_delete= models.CASCADE, related_name= "comments")
+#     # # auteur_com=  models.ForeignKey(User, on_delete=models.CASCADE)
+#     # article= models.ForeignKey(Article, on_delete= models.CASCADE, related_name='comments')
+#     username= models.CharField(max_length=100)
+#     email= models.EmailField(max_length=200)
+#     corps = models.TextField(max_length=500)
+#     created= models.DateTimeField(auto_now_add= True)
+#     updated= models.DateTimeField(auto_now_add= True)
+#
+#     def __str__(self):
+#         return self.article.titre
+
 class Comment(models.Model):
-    post= models.ForeignKey(Article, on_delete= models.CASCADE, related_name= "comments")
-    # # auteur_com=  models.ForeignKey(User, on_delete=models.CASCADE)
-    # article= models.ForeignKey(Article, on_delete= models.CASCADE, related_name='comments')
-    username= models.CharField(max_length=100)
-    email= models.EmailField(max_length=200)
-    corps = models.TextField(max_length=500)
-    created= models.DateTimeField(auto_now_add= True)
-    updated= models.DateTimeField(auto_now_add= True)
+    post= models.ForeignKey(Article, on_delete=models.CASCADE, related_name='comments')
+    # username= models.CharField(max_length= 100)
+    auteur_com= models.ForeignKey(User, on_delete=models.CASCADE, related_name='commentaire')
+    email= models.EmailField(max_length= 200)
+    body= models.TextField()
+    created= models.DateTimeField(auto_now_add=True)
+    updated= models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
-        return self.article.titre
+        return self.post.titre
 
