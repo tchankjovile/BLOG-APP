@@ -2,44 +2,47 @@
 {% load static %}
 
 {%block content %}
+{% block slide %}
+<div id="carouselExampleAutoplaying" class="carousel slide" data-bs-ride="carousel">
+  <div class="carousel-inner">
+    <div class="carousel-item active">
+      <img src="{% static 'images/apprenez.jpg' %}" class="d-block w-100" alt="..." width="600px" height="600px">
+      <div class="carousel-caption d-none d-md-block">
+        <h1>découvrez chaque jour de nouveaux concepts sur la vie
+            la curiosité n'est pas vilaine quand on est curieux à propos de l'éssentiel.</h1>
+      </div>
+    </div>
+    <div class="carousel-item">
+      <img src="{% static 'images/commenter.jpg' %}" class="d-block w-100" alt="...">
+      <div class="carousel-caption d-none d-md-block">
+        <h5>Titre pour la deuxième image</h5>
+        <p>Description pour la deuxième image.</p>
+      </div>
+    </div>
+    <div class="carousel-item">
+      <img src="{% static 'images/soyez auteur.jpg' %}" class="d-block w-100" alt="...">
+      <div class="carousel-caption d-none d-md-block">
+        <h5>Titre pour la troisième image</h5>
+        <p>Description pour la troisième image.</p>
+      </div>
+    </div>
+  </div>
+  <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleAutoplaying" data-bs-slide="prev">
+    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+    <span class="visually-hidden">Previous</span>
+  </button>
+  <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleAutoplaying" data-bs-slide="next">
+    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+    <span class="visually-hidden">Next</span>
+  </button>
+</div>
 
-{% endblock%}
-<!-- {% block slide%}-->
-<!--<div id="carouselExampleAutoplaying" class="carousel slide" data-bs-ride="carousel">-->
-<!--  <div class="carousel-inner">-->
-<!--    <div class="carousel-item active">-->
-<!--      <img src="{% static 'images/apprenez.jpg' %}" class="d-block w-100" alt="..." width="600px" height="600px">-->
-<!--      <div class="carousel-caption d-none d-md-block">-->
-<!--        <h1>découvrez chaque jour de nouveaux concepts sur la vie-->
-<!--            la curiosité n'est pas vilaine quand on est curieux à propos de l'éssentiel.</h1>-->
-<!--      </div>-->
-<!--    </div>-->
-<!--    <div class="carousel-item">-->
-<!--      <img src="{% static 'images/commenter.jpg' %}" class="d-block w-100" alt="...">-->
-<!--      <div class="carousel-caption d-none d-md-block">-->
-<!--        <h5>Titre pour la deuxième image</h5>-->
-<!--        <p>Description pour la deuxième image.</p>-->
-<!--      </div>-->
-<!--    </div>-->
-<!--    <div class="carousel-item" data-bs-interval="2000" >-->
-<!--      <img src="{% static 'images/soyez auteur.jpg' %}" class="d-block w-100" alt="...">-->
-<!--      <div class="carousel-caption d-none d-md-block">-->
-<!--        <h5>Titre pour la troisième image</h5>-->
-<!--        <p>Description pour la troisième image.</p>-->
-<!--      </div>-->
-<!--    </div>-->
-<!--  </div>-->
-<!--  <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleAutoplaying" data-bs-slide="prev">-->
-<!--    <span class="carousel-control-prev-icon" aria-hidden="true"></span>-->
-<!--    <span class="visually-hidden">Previous</span>-->
-<!--  </button>-->
-<!--  <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleAutoplaying" data-bs-slide="next">-->
-<!--    <span class="carousel-control-next-icon" aria-hidden="true"></span>-->
-<!--    <span class="visually-hidden">Next</span>-->
-<!--  </button>-->
-<!--</div>-->
-<!--{%endblock%}-->
-
+<script>
+  $(document).ready(function(){
+    $('.carousel').carousel({ interval: 2000 });
+  });
+</script>
+{% endblock %}
 {%block services %}
 <header class="py-1 bg-light border-bottom mb-4">
     <div class="container">
@@ -113,4 +116,6 @@
 {% include "layouts/pagination.html" with page=posts %}
 
 </div>
+{% endblock%}
+
 {% endblock%}

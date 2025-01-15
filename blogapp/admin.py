@@ -1,13 +1,21 @@
 from django.contrib import admin
+from django.contrib.auth.models import User
+from django.contrib.auth.admin import UserAdmin as DefaultUserAdmin
 from blogapp.models import *
 
 
-# Register your models here.
-# admin.site.register(User)
-# admin.site.register(Article)
 @admin.register(Category)
 class CategoryAdmin(admin.ModelAdmin):
     list_display = ('nom_category', 'slug')
+
+# Désinscrire le User par défaut
+admin.site.unregister(User)
+
+# nous prnom en paraùètre le DefaultUserAdmin parce que nous voulons personnaliser l'affichage des utilisateur
+# car ceux ci sont gerer par defaut dans le authUserAdmin
+@admin.register(User)
+class UserAdmin(DefaultUserAdmin):
+    list_display = ('username', 'email', 'password')
 
 @admin.register(Article)
 class ArticleAdmin(admin.ModelAdmin):
